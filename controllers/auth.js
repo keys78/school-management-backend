@@ -11,10 +11,7 @@ exports.register = async (req, res, next) => {
             password,
         });
 
-        res.status(201).json({
-            success: true,
-            token: `${username}'s token is safd78gyav8`
-        });
+       sendToken(user, 201, res);
     } catch ( error ) {
         next(error);
     }
@@ -40,18 +37,26 @@ exports.login = async (req, res, next) => {
             return next(new ErrorResponse('Invalid Credentials', 401))
         }
 
-        res.status(200).json({
-            success: true,
-            token: "83yrfnsau97"
-        })
-
+        sendToken(user, 200, res);
     } catch (error) {
        next(error)
     }
 };
 
 exports.forgotpassword = (req, res, next) => {
-    res.send('Forgot Password Route')
+    const {email} = req.body;
+
+    try {
+        const user = await User.findOne({email});
+
+        if(!user) {
+            return next(new ErrorResponse("Email could not not be sent", 404))
+        }
+
+        const resetToken = user.getResetPasswordToken();
+    } catch (error) {
+
+    }
 };
 
 exports.resetpassword = (req, res, next) => {
@@ -59,5 +64,6 @@ exports.resetpassword = (req, res, next) => {
 };
 
 const sendToken = (user, statusCode, res) => {
-    const token = 
+    const token = user.getSignedToken();
+    res.status(statusCode).json({ success:true, token})
 }
