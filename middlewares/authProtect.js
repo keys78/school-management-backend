@@ -6,13 +6,18 @@ const ErrorResponse = require('../utils/errorResponse');
 exports.protect = async (req, res, next) => {
     let token;
 
-    if(req.headers.authorizaton && req.headers.authorizaton.startsWith("Bearer")) {
-        token = req.headers.authorizaton.split(" ")[1]
+    if(
+        req.headers.authorization &&
+        req.headers.authorization.startsWith("Bearer")
+        ) {
+        token = req.headers.authorization.split(" ")[1]
     }
 
+
     if(!token) {
-        return next(new ErrorResponse("Not authorized to access this route", 401));
+        return next(new ErrorResponse("Not authorized to access this routey", 401));
     }
+
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
