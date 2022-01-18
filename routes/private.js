@@ -31,7 +31,7 @@ const User = require('../models/User')
 // });
 
 router.get('/', protect, function (req, res) {
-    // req.user should be defined here because of the ensureAuth middleware
+    // req.user should be defined here because of the protect middleware
     const id = req.user.id;
   
     User.findOne({_id: id}, function (err, user) {

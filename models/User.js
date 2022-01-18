@@ -4,6 +4,11 @@ const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 
 const UserSchema = new mongoose.Schema({
+    // usercode: {
+    //     type: String
+    //     // required: [true, "Please provide your valid student code"],
+    //     // minlength: 6,
+    // },
     username: {
         type: String,
         required: [true, "Please provide a username"]
@@ -16,6 +21,15 @@ const UserSchema = new mongoose.Schema({
             "Please provide a valid email"
         ]
     },
+
+    faculty: {
+        type: String,
+    },
+
+    department: {
+        type: String,
+    },
+
     password: {
         type: String,
         required: [true, "Please add a password"],

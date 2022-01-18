@@ -2,19 +2,34 @@ const crypto = require("crypto")
 const User = require('../models/User');
 const ErrorResponse = require('../utils/errorResponse')
 const sendEmail = require('../utils/sendEmail')
+const bcrypt = require("bcryptjs")
 
 
 exports.register = async (req, res, next) => {
-    const { username, email, password } = req.body;
+    const { username, email, department, faculty, password} = req.body;
 
     try {
+        // try {
+        //     const dbusercode = await User.findOne({ usercode })
+        //     if(!dbusercode) {
+        //         console.log(dbusercode)
+        //         return next(new ErrorResponse('Invalid UserCode', 401))
+        //     }
+        //     next();
+        // } catch (error) { 
+        //     next(error)
+        // }
+
         const user = await User.create({
             username, 
             email, 
-            password,
+            department,
+            faculty,
+            password
         });
 
        sendToken(user, 201, res);
+
     } catch ( error ) {
         next(error);
     }
@@ -120,6 +135,22 @@ exports.resetpassword = async (req, res, next) => {
             next(error);
         }
 };
+
+exports.changepassword = async (req, res, next) => {
+    console.log("changePassword");
+    const { id } = req.params;
+    try {
+       
+        const salt = await bcrypt.genSalt(10);
+        const hashed = await bcrypt.hash(req.body.password, salt);
+        const userPassword = await User.findByIdAndUpdate({ _id: id }, { password: hashed }, { new: true });
+        return res.status(200).json({ status: true, data: userPassword });
+    } catch (error) {
+        return res.status(400).json({ status: false, error: "Error Occured" });
+    }
+
+}
+
 
 const sendToken = (user, statusCode, res) => {
     const token = user.getSignedToken();
