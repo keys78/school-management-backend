@@ -6,7 +6,7 @@ const bcrypt = require("bcryptjs")
 
 
 exports.register = async (req, res, next) => {
-    const { username, email, department, faculty, password} = req.body;
+    const { role, username, email, department, faculty, password } = req.body;
 
     try {
         // try {
@@ -19,8 +19,12 @@ exports.register = async (req, res, next) => {
         // } catch (error) { 
         //     next(error)
         // }
+        // if(role !== "admin") {
+        //     return res.status(404).json({ status: false, data: "You aren't allowed to vew this page "});
+        //   }
 
         const user = await User.create({
+            role,
             username, 
             email, 
             department,
@@ -48,6 +52,8 @@ exports.login = async (req, res, next) => {
         if(!user) {
             return next(new ErrorResponse('Invalid Credentials', 401))
         }
+
+      
 
         const isMatch = await user.matchPasswords(password);
 

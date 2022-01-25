@@ -9,6 +9,7 @@ const UserSchema = new mongoose.Schema({
     //     // required: [true, "Please provide your valid student code"],
     //     // minlength: 6,
     // },
+    role: {type: String},
     username: {
         type: String,
         required: [true, "Please provide a username"]
@@ -29,6 +30,14 @@ const UserSchema = new mongoose.Schema({
     department: {
         type: String,
     },
+
+    courses: [
+        {
+        subject: {
+            type: Array
+        }
+    }
+    ],
 
     password: {
         type: String,

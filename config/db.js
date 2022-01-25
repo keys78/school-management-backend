@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const connectDB  = () => {
-        mongoose.connect('mongodb+srv://Emmanuel:todo12345@mernapp.2kina.mongodb.net/todoapp?retryWrites=true&w=majority', {
+        mongoose.connect('mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false', {
         useNewUrlParser: true,
         // useCreateIndex: true,
         // useUnfiedTopology: true,
