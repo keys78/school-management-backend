@@ -4,12 +4,11 @@ const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 
 const UserSchema = new mongoose.Schema({
-    // usercode: {
-    //     type: String
-    //     // required: [true, "Please provide your valid student code"],
-    //     // minlength: 6,
-    // },
-    role: {type: String},
+    role: {
+        type: String,
+        default: "user",
+        enum: ["user", "teacher", "admin"]
+      },
     username: {
         type: String,
         required: [true, "Please provide a username"]

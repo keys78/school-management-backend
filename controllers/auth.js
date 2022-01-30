@@ -6,25 +6,10 @@ const bcrypt = require("bcryptjs")
 
 
 exports.register = async (req, res, next) => {
-    const { role, username, email, department, faculty, password } = req.body;
+    const { username, email, department, faculty, password } = req.body;
 
     try {
-        // try {
-        //     const dbusercode = await User.findOne({ usercode })
-        //     if(!dbusercode) {
-        //         console.log(dbusercode)
-        //         return next(new ErrorResponse('Invalid UserCode', 401))
-        //     }
-        //     next();
-        // } catch (error) { 
-        //     next(error)
-        // }
-        // if(role !== "admin") {
-        //     return res.status(404).json({ status: false, data: "You aren't allowed to vew this page "});
-        //   }
-
         const user = await User.create({
-            role,
             username, 
             email, 
             department,

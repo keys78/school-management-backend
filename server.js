@@ -12,11 +12,15 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+// authentication routes
 app.use('/api/auth', require('./routes/auth'));
+
+// user routes
 app.use('/api/private', require('./routes/private'));
 
 // Error Handler ( Should be last piece of middleware)
 app.use(errorHandler);
+
 
 const PORT = process.env.PORT || 4000
 
