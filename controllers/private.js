@@ -69,8 +69,6 @@ exports.getAllTeachers = (req, res, next) => {
     }
 };
 
-
-
 exports.updateProfile = async (req, res, next) => {
 
     const user = await User.findById(req.user._id);
@@ -100,6 +98,17 @@ exports.updateProfile = async (req, res, next) => {
         
 
 };
+
+exports.deleteUser = async (req, res, next) => {
+    User.findOneAndRemove({_id: req.params.id}, (err) => {
+        if (err) {
+          console.log('failed to delete user successfully')
+          res.json({ success: false, data: 'failed to delete user'})
+        }
+    
+        res.json({ success: true, data: 'account has been deleted'})
+      });
+}
 
 // const sendToken = (user, statusCode, res) => {
 //     const token = user.getSignedToken();
