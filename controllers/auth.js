@@ -5,24 +5,19 @@ const sendEmail = require('../utils/sendEmail')
 const bcrypt = require("bcryptjs")
 
 
-exports.register = async (req, res, next) => {
-    const { username, email, department, faculty, password } = req.body;
-
+exports.register = async (userDetails, role, res, next) => {
     try {
         const user = await User.create({
-            username, 
-            email, 
-            department,
-            faculty,
-            password
+           ...userDetails, role
         });
 
        sendToken(user, 201, res);
 
-    } catch ( error ) {
+    } catch ( error) {
         next(error);
     }
 };
+
 
 exports.login = async (req, res, next) => {
     const { email, password } = req.body;

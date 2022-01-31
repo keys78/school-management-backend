@@ -22,21 +22,21 @@ const UserSchema = new mongoose.Schema({
         ]
     },
 
-    faculty: {
-        type: String,
-    },
+    // faculty: {
+    //     type: String,
+    // },
 
-    department: {
-        type: String,
-    },
+    // department: {
+    //     type: String,
+    // },
 
-    courses: [
-        {
-        subject: {
-            type: Array
-        }
-    }
-    ],
+    // courses: [
+    //     {
+    //     subject: {
+    //         type: Array
+    //     }
+    // }
+    // ],
 
     password: {
         type: String,

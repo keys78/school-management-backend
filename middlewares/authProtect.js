@@ -35,3 +35,14 @@ exports.protect = async (req, res, next) => {
         return next(new ErrorResponse("Not authorized to access this route", 401));
     }
 }
+
+
+
+exports.isAdmin = async (req, res, next) => {   
+
+    if(req.user.role !== 'admin') {
+        return next(new ErrorResponse('You are not an admin figure', 401))
+    }
+
+    next()
+}

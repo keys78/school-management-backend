@@ -1,43 +1,18 @@
 const express = require("express");
 const router = express.Router();
-const { getUsers } = require('../controllers/private');
-const { protect } = require('../middlewares/authProtect')
+const { getUser, getAllStudents, getTeacher, getAllTeachers } = require('../controllers/private');
+const { protect, isAdmin } = require('../middlewares/authProtect')
 const User = require('../models/User')
 
 
-
-router.get('/', protect, function (req, res) {
-
-  // const admin = User.find({role: "admin"}, (err, result) => {
-  //       err ? res.json(err) : res.json(result)
-  //     })
-
-  //     if(admin) {
-  //       User.find({}, (err, result) => {
-  //             err ? res.json(err) : res.json(result)
-  //           })
-  //     } else {
-  //       const id = req.user.id;
-  //         User.findOne({ _id: id }, function (err, user) {
-  //           if (err) return res.json(400, { message: `user ${id} not found.` });
-  //           res.json(user);
-  //         });
-  //     }
-
-  // if(req.body.role === "admin") {
-  //    User.find({}, (err, result) => {
-  //     err ? res.json(err) : res.json(result)
-  //   })
-  // } else {
-    const id = req.user.id;
-    User.findOne({ _id: id }, function (err, user) {
-      if (err) return res.json(400, { message: `user ${id} not found.` });
-      res.json(user);
-    });
-  // }
- 
+router.route('/user').get(protect, getUser);
 
 
-});
+// admin routes
+router.route('/admin').get(protect, isAdmin, getUser);
+router.route('/admin/users').get(protect, isAdmin, getAllStudents);
+router.route('/admin/teacher/:id').get(protect, isAdmin, getTeacher);
+router.route('/admin/teachers').get(protect, isAdmin, getAllTeachers);
+
 
 module.exports = router; 
