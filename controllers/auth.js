@@ -123,7 +123,6 @@ exports.resetpassword = async (req, res, next) => {
 };
 
 exports.changepassword = async (req, res, next) => {
-    console.log("changePassword");
     const { id } = req.params;
     try {
        
@@ -131,8 +130,9 @@ exports.changepassword = async (req, res, next) => {
         const hashed = await bcrypt.hash(req.body.password, salt);
         const userPassword = await User.findByIdAndUpdate({ _id: id }, { password: hashed }, { new: true });
         return res.status(200).json({ status: true, data: userPassword });
+        
     } catch (error) {
-        return res.status(400).json({ status: false, error: "Error Occured" });
+        next(error)
     }
 
 }

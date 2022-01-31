@@ -72,22 +72,6 @@ exports.getAllTeachers = (req, res, next) => {
 
 
 exports.updateProfile = async (req, res, next) => {
-    
-    // try {
-    //     const { username } = req.body;
-    //     const { id } = req.params;
-    //     const filter = { id : id }
-      
-    //     const updatedUser = await User.findOneAndUpdate(filter, req.body, { new: true })
-
-    //     return res.status(200).json({
-    //         message : "Updated user",
-    //         data: updatedUser
-    //       });
-
-    // } catch (error) {
-    //     next(error)
-    // }
 
     const user = await User.findById(req.user._id);
 
@@ -95,9 +79,9 @@ exports.updateProfile = async (req, res, next) => {
     user.username = req.body.username || user.username;
     user.email = req.body.email || user.email;
     user.pic = req.body.pic || user.pic;
-    if (req.body.password) {
-      user.password = req.body.password;
-    }
+    // if (req.body.password) {
+    //   user.password = req.body.password;
+    // }
 
     const updatedUser = await user.save();
 
@@ -117,7 +101,7 @@ exports.updateProfile = async (req, res, next) => {
 
 };
 
-const sendToken = (user, statusCode, res) => {
-    const token = user.getSignedToken();
-    res.status(statusCode).json({ success:true, token})
-}
+// const sendToken = (user, statusCode, res) => {
+//     const token = user.getSignedToken();
+//     res.status(statusCode).json({ success:true, token})
+// }
