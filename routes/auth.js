@@ -15,6 +15,6 @@ router.route("/forgotpassword").post(forgotpassword)
 
 router.route("/resetpassword/:resetToken").put(resetpassword)
 
-router.route("/changepassword/:id").patch(changepassword)
+router.route("/changepassword/:id").post(changepassword)
 
 module.exports = router
