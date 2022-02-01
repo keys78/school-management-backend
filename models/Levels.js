@@ -18,7 +18,7 @@ const DepartmentSchema = new mongoose.Schema({
 
 const CourseSchema = new mongoose.Schema({
     subject: { type: String },
-    score: { type: Number },
+    score: { type: String },
     user: { required: true, type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 });
 

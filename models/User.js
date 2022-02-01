@@ -35,17 +35,17 @@ const UserSchema = new mongoose.Schema({
           "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
       },
 
-    // courses: [
-    //     { type: mongoose.Schema.Types.ObjectId, ref: 'Course' }
-    // ],
+    courses: [
+        { type: mongoose.Schema.Types.ObjectId, ref: 'Course' }
+    ],
 
-    // Department: [
-    //     { type: mongoose.Schema.Types.ObjectId, ref: 'Department' }
-    // ],
+    Department: [
+        { type: mongoose.Schema.Types.ObjectId, ref: 'Department' }
+    ],
 
-    // Faculty: [
-    //     { type: mongoose.Schema.Types.ObjectId, ref: 'Faculty' }
-    // ],
+    Faculty: [
+        { type: mongoose.Schema.Types.ObjectId, ref: 'Faculty' }
+    ],
 
    
 

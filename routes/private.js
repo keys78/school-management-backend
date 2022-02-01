@@ -5,7 +5,7 @@ const { getUser, getStudent, getAllStudents, getTeacher, getAllTeachers, updateP
 const { protect, isAdmin } = require('../middlewares/authProtect')
 
 // user routes
-router.route('/').get(protect, getUser);
+router.route('/user').get(protect, getUser);
 router.route('/profile').post(protect, updateProfile);
 
 router.route('/register-course').post(protect, registerCourse);
