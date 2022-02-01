@@ -3,12 +3,19 @@ const mongoose = require('mongoose');
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 
+
 const UserSchema = new mongoose.Schema({
     role: {
         type: String,
         default: "user",
         enum: ["user", "teacher", "admin"]
       },
+    
+    level: {
+        type: Number,
+        default: 1
+    },
+
     username: {
         type: String,
         required: [true, "Please provide a username"]
@@ -28,21 +35,19 @@ const UserSchema = new mongoose.Schema({
           "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
       },
 
-    // faculty: {
-    //     type: String,
-    // },
-
-    // department: {
-    //     type: String,
-    // },
-
     // courses: [
-    //     {
-    //     subject: {
-    //         type: Array
-    //     }
-    // }
+    //     { type: mongoose.Schema.Types.ObjectId, ref: 'Course' }
     // ],
+
+    // Department: [
+    //     { type: mongoose.Schema.Types.ObjectId, ref: 'Department' }
+    // ],
+
+    // Faculty: [
+    //     { type: mongoose.Schema.Types.ObjectId, ref: 'Faculty' }
+    // ],
+
+   
 
     password: {
         type: String,

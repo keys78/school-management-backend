@@ -1,6 +1,7 @@
 management flow ==><== 
 
-Students can register with their student code: so new students will have their student code and they can create new account with their student code they will provide [full name, dob, state of origin, address, email, phone number and password]
+Students can register with their student code: so new students will have their student code and they can create new account with their student code 
+student will provide [full name, dob, state of origin, address, email, phone number and password]
 
 Student can login
 Student can change password 
@@ -23,6 +24,6 @@ Admin manages both student and admin
 
 
 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-          'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-          'http://' + req.headers.host + '/reset/' + token + '\n\n' +
-          'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+'http://' + req.headers.host + '/reset/' + token + '\n\n' +
+'If you did not request this, please ignore this email and your password will remain unchanged.\n'

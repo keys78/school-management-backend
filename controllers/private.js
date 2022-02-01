@@ -2,19 +2,37 @@ const User = require('../models/User');
 const ErrorResponse = require('../utils/errorResponse');
 
 
-exports.getUser = (req, res, next) => {
+// User.findOne({ username: req.params.username })
+//       .populate('reviews')
+//       .then((result) => {
+//         res.json(result);
+//       })
+//       .catch((error) => {
+//         res.status(500).json({ error });
+//       });
+
+exports.getUser = (req, res,) => {
     const { id } = req.user
-    try {
-        User.findOne({ _id: id }, function (err, user) {
-            res.json(user);
-        });
-
-    } catch (error) {
-        next(error)
-    }
-
-
+  
+        User.findOne({ _id: id }).populate('courses').exec((err, user) => {
+            if(err) {
+                res.status(400).send(err)
+            } else {
+                res.status(300).json(user)
+            }
+        })
 };
+// exports.getUser = (req, res, next) => {
+//     const { id } = req.user
+//     try {
+//         User.findOne({ _id: id }, function (err, user) {
+//             res.json(user);
+//         });
+
+//     } catch (error) {
+//         next(error)
+//     }
+// };
 
 exports.getStudent = (req, res, next) => {
     const { id } = req.params
