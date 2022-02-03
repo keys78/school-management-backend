@@ -39,16 +39,15 @@ const UserSchema = new mongoose.Schema({
         { type: mongoose.Schema.Types.ObjectId, ref: 'Course' }
     ],
 
-    Department: [
-        { type: mongoose.Schema.Types.ObjectId, ref: 'Department' }
-    ],
+    Department: {
+         type: mongoose.Schema.Types.ObjectId, ref: 'Department' 
+    },
 
-    Faculty: [
-        { type: mongoose.Schema.Types.ObjectId, ref: 'Faculty' }
-    ],
+    Faculty: { 
+        type: mongoose.Schema.Types.ObjectId, ref: 'Faculty'
+     },
 
    
-
     password: {
         type: String,
         required: [true, "Please add a password"],
@@ -60,6 +59,9 @@ const UserSchema = new mongoose.Schema({
     
 },
 { timestamps: true });
+
+
+
 
 UserSchema.pre("save", async function(next) {
     if(!this.isModified("password")) {

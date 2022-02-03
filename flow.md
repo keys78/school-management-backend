@@ -5,7 +5,7 @@ student will provide [full name, dob, state of origin, address, email, phone num
 
 Student can login
 Student can change password 
-Students can see their courses 
+Students can register and see their courses 
 Students can see their test and exam scores and their GPA
 
 A student belongs to a department and a department belongs to faculty 

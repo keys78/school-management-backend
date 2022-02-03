@@ -37,6 +37,15 @@ exports.protect = async (req, res, next) => {
 }
 
 
+exports.isTeacherAndAdmin = async(req, res, next) => {
+
+    const permitAdminAndTeacher = req.user.role === 'admin' || req.user.role === 'teacher'
+
+    if(!permitAdminAndTeacher) {
+        return next(new ErrorResponse('Ole buruku, wetin you dey find here?', 401))
+    }
+    next()
+} 
 
 exports.isAdmin = async (req, res, next) => {   
     if(req.user.role !== 'admin') {

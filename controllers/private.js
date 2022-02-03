@@ -14,7 +14,7 @@ const ErrorResponse = require('../utils/errorResponse');
 exports.getUser = (req, res,) => {
     const { id } = req.user
   
-        User.findOne({ _id: id }).populate('courses').exec((err, user) => {
+        User.findOne({ _id: id }).populate({ path: 'courses', select: 'subject score -_id', }).exec((err, user) => {
             if(err) {
                 res.status(400).send(err)
             } else {
@@ -22,6 +22,22 @@ exports.getUser = (req, res,) => {
             }
         })
 };
+// exports.getUser = (req, res,) => {
+//     const { id } = req.user
+  
+//         User.findOne({ _id: id }).populate('courses', { subject: 1, score: 1, _id: - 1}).exec((err, user) => {
+//             if(err) {
+//                 res.status(400).send(err)
+//             } else {
+//                 res.status(200).json(user)
+//             }
+//         })
+// };
+
+
+
+
+
 // exports.getUser = (req, res, next) => {
 //     const { id } = req.user
 //     try {

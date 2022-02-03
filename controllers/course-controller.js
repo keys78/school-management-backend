@@ -1,71 +1,61 @@
-const  { Course } = require('../models/Levels')
-const  User = require('../models/User')
+const { Course, Department, Faculty } = require('../models/Levels')
+const User = require('../models/User')
 
-// exports.registerCourse = (req, res) => {
-//     var courseObj = {
-//         "subject": req.body.subject,
-//         "score": req.body.score
-//     }
-//     var newCourse = new Course(courseObj)
-//     newCourse.save((err, course) => {
-//         err &&  res.status(400).send(err)
-//         res.status(200).json(course)
-//     })
-// };
-exports.registerCourse = async (req, res, next) => {
-    // const { subject, score } = req.body
-    // const course = new Course()
-    // course.id = req.body.id;
-    // course.subject = req.body.subject;
-    // course.score = req.body.score;
-    // course.save()
-    //   .then((result) => {
-    //     User.findOne({ course: course.id }, (err, user) => {
-    //         if (user) {
-    //             // The below two lines will add the newly saved course's 
-    //             // ObjectID to the the User's courses array field
-    //             user.courses.push(course);
-    //             user.save();
-    //             res.json(course);
-    //         }
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     res.status(500).json({ error });
-    //   });
-        const { id } = req.params
-      try {
-        // const course = await Course.create({
-        //    "subject": subject,
-        //    "score": score,
-        //     "user": id
-        // });
+exports.registerCourse = (req, res) => {
+    const subject = (req.body.subject);
+    const score = (req.body.score);
+    User.findById(
+        { _id: req.params.id })
+        .exec()
+        .then(user => {
+            const course = new Course({
+                subject,
+                score,
+                user: req.params.id
+            });
+            course.save()
+                .then(course => {
+                    console.log(course._id);
+                    l = user.courses.push(course._id);
 
-        const newCourse = new Course({
-            subjectv: req.body.subject,
-            score: req.body.score,
-            user: '61f966c9900345ab81789391'
-         })
-
-         newCourse.save()
-
-        res.json({ success: true, data: newCourse})
-
-    } catch ( error) {
-        next(error);
-    }
+                    user.save()
+                        .then((user) => res.status(200).json(user))
+                        .catch(err => res.status(400).json('Error on user save: ' + err));
+                }
+                )
+                .catch(err => res.status(400).json('Error on course save: ' + err));
+        })
+        .catch(err => res.status(400).json('Error: ' + err));
 };
 
+exports.updateScore = (req, res) => {
 
-exports.viewCourses = (req, res) => {
-    // const { id } = req.user
-  
-    Course.find({}).populate('user').exec((err, course) => {
+    let scoreObj = { score: req.body.score }
+
+    Course.findByIdAndUpdate(req.params.id, scoreObj, { new: true })
+        .exec((err, course) => {
+            if (err) {
+                res.status(400).send(err)
+            } else {
+                res.status(200).json(course);
+            }
+        })
+
+}
+
+exports.selectDepartment = (req, res) => {
+    const department =  req.body.department
+
+    const myDepartment = new Department({
+        department,
+        user: req.params.id
+    });
+
+    myDepartment.save((err, dept) => {
         if(err) {
-            res.status(400).send(err)
+            res.json({ data: "unable to create department"})
         } else {
-            res.status(300).json(course)
+            res.json({ success: true, data: dept })
         }
     })
 }
-

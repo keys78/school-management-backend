@@ -9,7 +9,7 @@ const FacultySchema = new mongoose.Schema({
 
 
 const DepartmentSchema = new mongoose.Schema({
-    department: { type: String },
+    department: { required:true, type: String },
     courses: [
         { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
     ]
@@ -17,9 +17,23 @@ const DepartmentSchema = new mongoose.Schema({
 
 
 const CourseSchema = new mongoose.Schema({
-    subject: { type: String },
-    score: { type: String },
-    user: { required: true, type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+    subject: {
+        type: String,
+        required: true,
+        unique: true
+    },
+
+    score: {
+        type: String,
+        required:true,
+        unique: true
+    },
+
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    }
 });
 
 

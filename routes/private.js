@@ -1,15 +1,20 @@
 const express = require("express");
-const { registerCourse, viewCourses  } = require("../controllers/course-controller");
+const { registerCourse, updateScore, selectDepartment  } = require("../controllers/course-controller");
 const router = express.Router();
 const { getUser, getStudent, getAllStudents, getTeacher, getAllTeachers, updateProfile, deleteUser, } = require('../controllers/private');
-const { protect, isAdmin } = require('../middlewares/authProtect')
+const { protect, isAdmin, isTeacherAndAdmin } = require('../middlewares/authProtect');
+const { Course } = require("../models/Levels");
+const User = require("../models/User");
 
 // user routes
 router.route('/user').get(protect, getUser);
 router.route('/profile').post(protect, updateProfile);
+router.route('/register-course/:id').post(protect, registerCourse) //userId
 
-router.route('/register-course').post(protect, registerCourse);
-router.route('/view-course').get(protect, viewCourses);
+
+router.route('/update-score/:id').put(protect, isTeacherAndAdmin, updateScore) //courseId
+
+router.route('/select-department').post(selectDepartment)
 
 
 // admin routes
