@@ -59,3 +59,14 @@ exports.selectDepartment = (req, res) => {
         }
     })
 }
+
+exports.getAllUserForACourse = (req, res) => {
+    User.find({ courses: ['subject']})
+        .exec((err, course) => {
+            if (err) {
+                res.status(400).send(err)
+            } else {
+                res.status(200).json(course);
+            }
+    })
+}

@@ -1,15 +1,10 @@
 const User = require('../models/User');
 const ErrorResponse = require('../utils/errorResponse');
+const multer = require('multer')
+const DIR = './public';
 
 
-// User.findOne({ username: req.params.username })
-//       .populate('reviews')
-//       .then((result) => {
-//         res.json(result);
-//       })
-//       .catch((error) => {
-//         res.status(500).json({ error });
-//       });
+// User.findOne({ username: req.params.username })//       .populate('reviews')//       .then((result) => {//         res.json(result);//       })//       .catch((error) => {//         res.status(500).json({ error });//       });
 
 exports.getUser = (req, res,) => {
     const { id } = req.user
@@ -22,33 +17,9 @@ exports.getUser = (req, res,) => {
             }
         })
 };
-// exports.getUser = (req, res,) => {
-//     const { id } = req.user
-  
-//         User.findOne({ _id: id }).populate('courses', { subject: 1, score: 1, _id: - 1}).exec((err, user) => {
-//             if(err) {
-//                 res.status(400).send(err)
-//             } else {
-//                 res.status(200).json(user)
-//             }
-//         })
-// };
+// exports.getUser = (req, res,) => {//     const { id } = req.user  //         User.findOne({ _id: id }).populate('courses', { subject: 1, score: 1, _id: - 1}).exec((err, user) => {//             if(err) {//                 res.status(400).send(err)//             } else {//                 res.status(200).json(user)//             }//         })// };
 
-
-
-
-
-// exports.getUser = (req, res, next) => {
-//     const { id } = req.user
-//     try {
-//         User.findOne({ _id: id }, function (err, user) {
-//             res.json(user);
-//         });
-
-//     } catch (error) {
-//         next(error)
-//     }
-// };
+// exports.getUser = (req, res, next) => {//     const { id } = req.user//     try {//         User.findOne({ _id: id }, function (err, user) {//             res.json(user);//         });//     } catch (error) {//         next(error)//     }// };
 
 exports.getStudent = (req, res, next) => {
     const { id } = req.params
@@ -103,17 +74,38 @@ exports.getAllTeachers = (req, res, next) => {
     }
 };
 
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, DIR)
+    },
+    filename: function (req, file, cb) {
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+      cb(null, file.fieldname + '-' + uniqueSuffix)
+    }
+  })
+
+
+exports.upload = multer({
+    storage: storage,
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
+            cb(null, true);
+        } else {
+            cb(null, false);
+            return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+        }
+    }
+});
+
 exports.updateProfile = async (req, res, next) => {
 
     const user = await User.findById(req.user._id);
+    // const url = req.protocol + '://' + req.get('host')
 
   if (user) {
     user.username = req.body.username || user.username;
     user.email = req.body.email || user.email;
-    user.pic = req.body.pic || user.pic;
-    // if (req.body.password) {
-    //   user.password = req.body.password;
-    // }
+    user.profileImg = user.profileImg
 
     const updatedUser = await user.save();
 
@@ -121,10 +113,10 @@ exports.updateProfile = async (req, res, next) => {
       _id: updatedUser._id,
       username: updatedUser.username,
       email: updatedUser.email,
-      pic: updatedUser.pic,
-    //   isAdmin: updatedUser.isAdmin,
-    //   token: generateToken(updatedUser._id),
+      profileImg: updatedUser.profileImg
+
     });
+
   } else {
     res.status(404);
     throw new Error("User Not Found");
@@ -132,6 +124,70 @@ exports.updateProfile = async (req, res, next) => {
         
 
 };
+
+
+
+// router.post('/user-profile', upload.single('profileImg'), (req, res, next) => {
+exports.uploadImage = async (req, res, next) => {
+    const url = req.protocol + '://' + req.get('host')
+    const user = new User({
+
+        profileImg: url + '/public/' + req.file.filename
+    });
+    user.save().then(result => {
+        res.status(201).json({
+                result
+        })
+    }).catch(err => {
+        console.log(err),
+            res.status(500).json({
+                error: err
+            });
+    })
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 exports.deleteUser = async (req, res, next) => {
     User.findOneAndRemove({_id: req.params.id}, (err) => {
@@ -143,8 +199,3 @@ exports.deleteUser = async (req, res, next) => {
         res.json({ success: true, data: 'account has been deleted'})
       });
 }
-
-// const sendToken = (user, statusCode, res) => {
-//     const token = user.getSignedToken();
-//     res.status(statusCode).json({ success:true, token})
-// }

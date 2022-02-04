@@ -4,13 +4,14 @@ const connectDB = require('./config/db');
 const errorHandler = require('./middlewares/error')
 const cors = require('cors')
 
+const path = require('path')
+
 // Connect DB
 connectDB();
-
 const app = express();
-
 app.use(express.json());
 app.use(cors());
+
 
 // authentication routes
 app.use('/api/auth', require('./routes/auth'));
@@ -18,6 +19,10 @@ app.use('/api/auth', require('./routes/auth'));
 // user routes
 app.use('/api/private', require('./routes/private'));
 
+
+
+
+// app.use('api', fileRoutes.)
 // Error Handler ( Should be last piece of middleware)
 app.use(errorHandler);
 
