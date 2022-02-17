@@ -7,8 +7,8 @@ const jwt = require("jsonwebtoken")
 const UserSchema = new mongoose.Schema({
     role: {
         type: String,
-        default: "user",
-        enum: ["user", "teacher", "admin"]
+        default: "student",
+        enum: ["student", "teacher", "admin"]
       },
     
     level: {
@@ -16,10 +16,9 @@ const UserSchema = new mongoose.Schema({
         default: 1
     },
 
-    username: {
-        type: String,
-        required: [true, "Please provide a username"]
-    },
+    firstName: { type: String, required: [true, "Please provide firstName"] },
+    lastName: { type: String, required: [true, "Please provide lastName"] },
+
     email: {
         type: String,
         required: [true, "Please provide an email"],
@@ -28,6 +27,11 @@ const UserSchema = new mongoose.Schema({
             "Please provide a valid email"
         ]
     },
+    phone: { type: String },
+    address: { type: String },
+    dob: { type: String },
+    sso: { type: String },
+
     profileImg: {
         type: String,
         // required: true,
@@ -35,9 +39,12 @@ const UserSchema = new mongoose.Schema({
           "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
       },
 
-    // courses: [
-    //     { type: mongoose.Schema.Types.ObjectId, ref: 'Course' }
-    // ],
+    courses: [
+        { type: mongoose.Schema.Types.ObjectId, ref: 'Course' }
+    ],
+
+    department: { type: String },
+    faculty: { type: String },
 
     // Department: {
     //      type: mongoose.Schema.Types.ObjectId, ref: 'Department' 

@@ -5,7 +5,7 @@ const { register, login, forgotpassword, resetpassword, changepassword } = requi
 
 // router.route("/register").post(register)
 
-router.post("/register", async (req, res, next) => { await register(req.body, 'user', res, next) });
+router.post("/register", async (req, res, next) => { await register(req.body, 'student', res, next) });
 router.post("/register-teacher", async (req, res, next) => { await register(req.body, 'teacher', res, next) });
 
 

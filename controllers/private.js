@@ -6,18 +6,34 @@ const DIR = './public';
 
 // User.findOne({ username: req.params.username })//       .populate('reviews')//       .then((result) => {//         res.json(result);//       })//       .catch((error) => {//         res.status(500).json({ error });//       });
 
-exports.getUser = (req, res,) => {
+exports.getUser = async (req, res,) => {
     const { id } = req.user
   
-        User.findOne({ _id: id }).populate({ path: 'courses', select: 'subject score -_id', }).exec((err, user) => {
+       await User.findOne({ _id: id }).populate({ path: 'courses', select: 'subject score -_id', }).exec((err, user) => {
             if(err) {
                 res.status(400).send(err)
             } else {
                 res.status(200).json(user)
             }
         })
+    // User.findOne({_id : id }, function(err,user){
+    //     if(err) {
+    //                     res.status(400).send(err)
+    //                 } else {
+    //                     res.status(200).json(user)
+    //                 }
+    // });
 };
-// exports.getUser = (req, res,) => {//     const { id } = req.user  //         User.findOne({ _id: id }).populate('courses', { subject: 1, score: 1, _id: - 1}).exec((err, user) => {//             if(err) {//                 res.status(400).send(err)//             } else {//                 res.status(200).json(user)//             }//         })// };
+// exports.getUser = (req, res,) => {
+//         const { id } = req.user  
+//             User.findOne({ _id: id }).populate('courses', { subject: 1, score: 1, _id: - 1}).exec((err, user) => {
+//                     if(err) {
+//                             res.status(400).send(err)
+//                         } else {
+//                                 res.status(200).json(user)
+//                             }
+//                         })
+//                 };
 
 // exports.getUser = (req, res, next) => {//     const { id } = req.user//     try {//         User.findOne({ _id: id }, function (err, user) {//             res.json(user);//         });//     } catch (error) {//         next(error)//     }// };
 

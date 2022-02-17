@@ -14,10 +14,10 @@ app.use(cors());
 
 
 // authentication routes
-app.use('/api/auth', require('./routes/auth'));
+app.use('/auth', require('./routes/auth'));
 
 // user routes
-app.use('/api/private', require('./routes/private'));
+app.use('/private', require('./routes/private'));
 
 
 
