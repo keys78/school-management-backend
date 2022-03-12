@@ -122,6 +122,10 @@ exports.updateProfile = async (req, res, next) => {
     user.firstName = req.body.firstName || user.firstName;
     user.lastName = req.body.lastName || user.lastName;
     user.email = req.body.email || user.email;
+    user.dob = req.body.dob || user.dob;
+    user.phone = req.body.phone || user.phone;
+    user.address = req.body.address || user.address;
+    user.soo = req.body.soo || user.soo;
     // user.profileImg = user.profileImg
 
     const updatedUser = await user.save();
@@ -131,6 +135,10 @@ exports.updateProfile = async (req, res, next) => {
       firstName: updatedUser.firstName,
       lastName: updatedUser.lastName,
       email: updatedUser.email,
+      dob: updatedUser.dob,
+      phone: updatedUser.phone,
+      address: updatedUser.address,
+      soo: updatedUser.soo,
     //   profileImg: updatedUser.profileImg
 
     });

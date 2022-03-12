@@ -12,8 +12,8 @@ const UserSchema = new mongoose.Schema({
       },
     
     level: {
-        type: Number,
-        default: 1
+        type: String,
+        default: '100'
     },
 
     firstName: { type: String, required: [true, "Please provide firstName"] },
@@ -30,7 +30,7 @@ const UserSchema = new mongoose.Schema({
     phone: { type: String },
     address: { type: String },
     dob: { type: String },
-    sso: { type: String },
+    soo: { type: String },
 
     profileImg: {
         type: String,
