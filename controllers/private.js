@@ -119,17 +119,19 @@ exports.updateProfile = async (req, res, next) => {
     // const url = req.protocol + '://' + req.get('host')
 
   if (user) {
-    user.username = req.body.username || user.username;
+    user.firstName = req.body.firstName || user.firstName;
+    user.lastName = req.body.lastName || user.lastName;
     user.email = req.body.email || user.email;
-    user.profileImg = user.profileImg
+    // user.profileImg = user.profileImg
 
     const updatedUser = await user.save();
 
     res.json({
-      _id: updatedUser._id,
-      username: updatedUser.username,
+    //   _id: updatedUser._id,
+      firstName: updatedUser.firstName,
+      lastName: updatedUser.lastName,
       email: updatedUser.email,
-      profileImg: updatedUser.profileImg
+    //   profileImg: updatedUser.profileImg
 
     });
 
