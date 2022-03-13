@@ -17,17 +17,11 @@ const DepartmentSchema = new mongoose.Schema({
 
 
 const CourseSchema = new mongoose.Schema({
-    subject: {
-        type: String,
-        required: true,
-        unique: true
-    },
-
-    score: {
-        type: String,
-        required:true,
-        unique: true
-    },
+    code: { type: String,  required:true, },
+    title: { type: String, required:true, },
+    score: { type: Number, required:true, },
+    units: { type: Number, required:true, },
+    status : { type: Boolean, default: false },
 
     user: {
         type: mongoose.Schema.Types.ObjectId,

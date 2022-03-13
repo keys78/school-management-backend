@@ -32,28 +32,13 @@ const UserSchema = new mongoose.Schema({
     dob: { type: String },
     soo: { type: String },
 
-    profileImg: {
-        type: String,
-        // required: true,
-        default:
-          "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
-      },
-
+    profileImg: { type: String, default:  "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg", },
     courses: [
         { type: mongoose.Schema.Types.ObjectId, ref: 'Course' }
     ],
 
     department: { type: String },
     faculty: { type: String },
-
-    // Department: {
-    //      type: mongoose.Schema.Types.ObjectId, ref: 'Department' 
-    // },
-
-    // Faculty: { 
-    //     type: mongoose.Schema.Types.ObjectId, ref: 'Faculty'
-    //  },
-
    
     password: {
         type: String,

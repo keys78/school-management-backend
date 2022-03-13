@@ -2,15 +2,20 @@ const { Course, Department, Faculty } = require('../models/Levels')
 const User = require('../models/User')
 
 exports.registerCourse = (req, res) => {
-    const subject = (req.body.subject);
-    const score = (req.body.score);
+    // const code = (req.body.code);
+    // const title = (req.body.title);
+    // const score = (req.body.score);
+    // const units = (req.body.units);
     User.findById(
         { _id: req.params.id })
         .exec()
         .then(user => {
             const course = new Course({
-                subject,
-                score,
+                code: req.body.code,
+                title: req.body.title,
+                score: req.body.score,
+                units: req.body.units,
+                status: req.body.status,
                 user: req.params.id
             });
             course.save()
@@ -61,7 +66,7 @@ exports.selectDepartment = (req, res) => {
 }
 
 exports.getAllUserForACourse = (req, res) => {
-    User.find({ courses: ['subject']})
+    User.find({ courses: ['code']})
         .exec((err, course) => {
             if (err) {
                 res.status(400).send(err)
