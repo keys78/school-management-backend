@@ -8,14 +8,14 @@ const DIR = './public';
 
 exports.getUser = async (req, res,) => {
     const { id } = req.user
-  
-       await User.findOne({ _id: id }).populate({ path: 'courses', select: 'code title score units score status -_id', }).exec((err, user) => {
-            if(err) {
-                res.status(400).send(err)
-            } else {
-                res.status(200).json(user)
-            }
-        })
+
+    await User.findOne({ _id: id }).populate({ path: 'courses', select: 'code title score units score status -_id', }).exec((err, user) => {
+        if (err) {
+            res.status(400).send(err)
+        } else {
+            res.status(200).json(user)
+        }
+    })
     // User.findOne({_id : id }, function(err,user){
     //     if(err) {
     //                     res.status(400).send(err)
@@ -52,7 +52,7 @@ exports.getStudent = (req, res, next) => {
 exports.getAllStudents = (req, res, next) => {
 
     try {
-        User.find({ role: 'user' }, function (err, users) {
+        User.find({ role: 'student' }).populate({ path: 'courses', select: 'code title score units score status _id', }).exec((err, users) => {
             if (err) {
                 return res.json({ success: false, data: "something went wrong" })
             }
@@ -92,13 +92,13 @@ exports.getAllTeachers = (req, res, next) => {
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, DIR)
+        cb(null, DIR)
     },
     filename: function (req, file, cb) {
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-      cb(null, file.fieldname + '-' + uniqueSuffix)
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+        cb(null, file.fieldname + '-' + uniqueSuffix)
     }
-  })
+})
 
 
 exports.upload = multer({
@@ -118,36 +118,36 @@ exports.updateProfile = async (req, res, next) => {
     const user = await User.findById(req.user._id);
     // const url = req.protocol + '://' + req.get('host')
 
-  if (user) {
-    user.firstName = req.body.firstName || user.firstName;
-    user.lastName = req.body.lastName || user.lastName;
-    user.email = req.body.email || user.email;
-    user.dob = req.body.dob || user.dob;
-    user.phone = req.body.phone || user.phone;
-    user.address = req.body.address || user.address;
-    user.soo = req.body.soo || user.soo;
-    // user.profileImg = user.profileImg
+    if (user) {
+        user.firstName = req.body.firstName || user.firstName;
+        user.lastName = req.body.lastName || user.lastName;
+        user.email = req.body.email || user.email;
+        user.dob = req.body.dob || user.dob;
+        user.phone = req.body.phone || user.phone;
+        user.address = req.body.address || user.address;
+        user.soo = req.body.soo || user.soo;
+        // user.profileImg = user.profileImg
 
-    const updatedUser = await user.save();
+        const updatedUser = await user.save();
 
-    res.json({
-    //   _id: updatedUser._id,
-      firstName: updatedUser.firstName,
-      lastName: updatedUser.lastName,
-      email: updatedUser.email,
-      dob: updatedUser.dob,
-      phone: updatedUser.phone,
-      address: updatedUser.address,
-      soo: updatedUser.soo,
-    //   profileImg: updatedUser.profileImg
+        res.json({
+            //   _id: updatedUser._id,
+            firstName: updatedUser.firstName,
+            lastName: updatedUser.lastName,
+            email: updatedUser.email,
+            dob: updatedUser.dob,
+            phone: updatedUser.phone,
+            address: updatedUser.address,
+            soo: updatedUser.soo,
+            //   profileImg: updatedUser.profileImg
 
-    });
+        });
 
-  } else {
-    res.status(404);
-    throw new Error("User Not Found");
-  }
-        
+    } else {
+        res.status(404);
+        throw new Error("User Not Found");
+    }
+
 
 };
 
@@ -162,7 +162,7 @@ exports.uploadImage = async (req, res, next) => {
     });
     user.save().then(result => {
         res.status(201).json({
-                result
+            result
         })
     }).catch(err => {
         console.log(err),
@@ -216,12 +216,12 @@ exports.uploadImage = async (req, res, next) => {
 
 
 exports.deleteUser = async (req, res, next) => {
-    User.findOneAndRemove({_id: req.params.id}, (err) => {
+    User.findOneAndRemove({ _id: req.params.id }, (err) => {
         if (err) {
-          console.log('failed to delete user successfully')
-          res.json({ success: false, data: 'failed to delete user'})
+            console.log('failed to delete user successfully')
+            res.json({ success: false, data: 'failed to delete user' })
         }
-    
-        res.json({ success: true, data: 'account has been deleted'})
-      });
+
+        res.json({ success: true, data: 'account has been deleted' })
+    });
 }

@@ -2,10 +2,6 @@ const { Course, Department, Faculty } = require('../models/Levels')
 const User = require('../models/User')
 
 exports.registerCourse = (req, res) => {
-    // const code = (req.body.code);
-    // const title = (req.body.title);
-    // const score = (req.body.score);
-    // const units = (req.body.units);
     User.findById(
         { _id: req.params.id })
         .exec()
