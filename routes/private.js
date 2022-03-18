@@ -26,7 +26,6 @@ router.route('/getcourse').get(getAllUserForACourse)
 // admin routes
 router.route('/admin').get(protect, isAdmin, getUser);
 router.route('/admin/user/:id').get(protect, isAdmin, getStudent);
-
 router.route('/admin/teacher/:id').get(protect, isAdmin, getTeacher);
 router.route('/admin/teachers').get(protect, isAdmin, getAllTeachers);
 router.route('/admin/delete-user/:id').delete(protect, isAdmin, deleteUser);

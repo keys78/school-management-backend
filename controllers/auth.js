@@ -8,12 +8,12 @@ const bcrypt = require("bcryptjs")
 exports.register = async (userDetails, role, res, next) => {
     try {
         const user = await User.create({
-           ...userDetails, role
+            ...userDetails, role
         });
 
-       sendToken(user, 201, res);
+        sendToken(user, 201, res);
 
-    } catch ( error) {
+    } catch (error) {
         next(error);
     }
 };
@@ -22,38 +22,38 @@ exports.register = async (userDetails, role, res, next) => {
 exports.login = async (req, res, next) => {
     const { email, password } = req.body;
 
-    if(!email || !password) {
+    if (!email || !password) {
         return next(new ErrorResponse('Please provide an email and password', 400))
     }
 
     try {
-        const user = await User.findOne({ email }). select("+password")
+        const user = await User.findOne({ email }).select("+password")
 
-        if(!user) {
+        if (!user) {
             return next(new ErrorResponse('Invalid Credentials', 401))
         }
 
-      
+
 
         const isMatch = await user.matchPasswords(password);
 
-        if(!isMatch) {
+        if (!isMatch) {
             return next(new ErrorResponse('Invalid Credentials', 401))
         }
 
         sendToken(user, 200, res);
     } catch (error) {
-       next(error)
+        next(error)
     }
 };
 
 exports.forgotpassword = async (req, res, next) => {
-    const {email} = req.body;
+    const { email } = req.body;
 
     try {
-        const user = await User.findOne({email});
+        const user = await User.findOne({ email });
 
-        if(!user) {
+        if (!user) {
             return next(new ErrorResponse("Email could not not be sent / account does not exist", 404))
         }
 
@@ -72,11 +72,11 @@ exports.forgotpassword = async (req, res, next) => {
         try {
             await sendEmail({
                 to: user.email,
-                subject:"Password Reset Request",
+                subject: "Password Reset Request",
                 text: message
             });
 
-            res.status(200).json({ success: true, data: "Email Sent"});
+            res.status(200).json({ success: true, data: "Email Sent" });
         } catch (error) {
             user.resetPasswordToken = undefined;
             user.resetPasswordExpire = undefined;
@@ -92,53 +92,78 @@ exports.forgotpassword = async (req, res, next) => {
 };
 
 exports.resetpassword = async (req, res, next) => {
-    const resetPasswordToken =  crypto
+    const resetPasswordToken = crypto
         .createHash("sha256")
         .update(req.params.resetToken)
         .digest("hex");
 
-        try {
-            const user = await User.findOne({
-                resetPasswordToken,
-                resetPasswordExpire: { $gt: Date.now() }
-            })
+    try {
+        const user = await User.findOne({
+            resetPasswordToken,
+            resetPasswordExpire: { $gt: Date.now() }
+        })
 
-            if(!user) {
-                return next(new ErrorResponse("Invalid Reset Token", 400))
-            }
-
-            user.password = req.body.password;
-            user.resetPasswordToken = undefined;
-            user.resetPasswordExpire = undefined;
-
-            await user.save();
-
-            res.status(201).json({
-                success: true,
-                data: "Password Reset Success"
-            })
-        } catch (error) {
-            next(error);
+        if (!user) {
+            return next(new ErrorResponse("Invalid Reset Token", 400))
         }
+
+        user.password = req.body.password;
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpire = undefined;
+
+        await user.save();
+
+        res.status(201).json({
+            success: true,
+            data: "Password Reset Success"
+        })
+    } catch (error) {
+        next(error);
+    }
 };
 
-exports.changepassword = async (req, res, next) => {
-    const { id } = req.params;
-    try {
-       
-        const salt = await bcrypt.genSalt(10);
-        const hashed = await bcrypt.hash(req.body.password, salt);
-        const userPassword = await User.findByIdAndUpdate({ _id: id }, { password: hashed }, { new: true });
-        return res.status(200).json({ status: true, data: userPassword });
-        
-    } catch (error) {
-        next(error)
-    }
+// exports.changepassword = async (req, res, next) => {
+//     const { id } = req.params;
+//     try {
 
-}
+//         const salt = await bcrypt.genSalt(10);
+//         const hashed = await bcrypt.hash(req.body.password, salt);
+//         const userPassword = await User.findByIdAndUpdate({ _id: id }, { password: hashed }, { new: true });
+//         return res.status(200).json({ status: true, data: userPassword });
+
+//     } catch (error) {
+//         next(error)
+//     }
+
+// }
+
+exports.changepassword = async (req, res, next) => {
+    const { newPassword, password } = req.body;
+    const { id } = req.params;
+
+    try {
+        const user = await User.findById({ _id: id }).select('+password');
+
+        if (!user) {
+            return next(new ErrorResponse("User not found", 400))
+        }
+
+        const isMatch = await user.matchPasswords(password);
+        if (!isMatch) {
+            return next(new ErrorResponse("Please enter correct old password", 400))
+        }
+        user.password = await newPassword
+        await user.save();
+
+        return res.json({ data: 'password update was successful' });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send('Something went wrong. Try again');
+    }
+};
 
 
 const sendToken = (user, statusCode, res) => {
     const token = user.getSignedToken();
-    res.status(statusCode).json({ success:true, token})
+    res.status(statusCode).json({ success: true, token })
 }
