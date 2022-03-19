@@ -122,20 +122,6 @@ exports.resetpassword = async (req, res, next) => {
     }
 };
 
-// exports.changepassword = async (req, res, next) => {
-//     const { id } = req.params;
-//     try {
-
-//         const salt = await bcrypt.genSalt(10);
-//         const hashed = await bcrypt.hash(req.body.password, salt);
-//         const userPassword = await User.findByIdAndUpdate({ _id: id }, { password: hashed }, { new: true });
-//         return res.status(200).json({ status: true, data: userPassword });
-
-//     } catch (error) {
-//         next(error)
-//     }
-
-// }
 
 exports.changepassword = async (req, res, next) => {
     const { newPassword, password } = req.body;
