@@ -76,7 +76,7 @@ exports.forgotpassword = async (req, res, next) => {
                 text: message
             });
 
-            res.status(200).json({ success: true, data: "Email Sent" });
+            res.status(200).json({ success: true, data: " If we found an account associated with that email, we've sent password reset instructions to the primary email address on the account." });
         } catch (error) {
             user.resetPasswordToken = undefined;
             user.resetPasswordExpire = undefined;
