@@ -18,6 +18,7 @@ const UserSchema = new mongoose.Schema({
 
     firstName: { type: String, required: [true, "Please provide firstName"]},
     lastName: { type: String, required: [true, "Please provide lastName"] },
+    gender: { type: String },
 
     email: {
         type: String,
