@@ -178,43 +178,6 @@ exports.uploadImage = async (req, res, next) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 exports.deleteUser = async (req, res, next) => {
     User.findOneAndRemove({ _id: req.params.id }, (err) => {
         if (err) {
