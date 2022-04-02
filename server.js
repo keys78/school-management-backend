@@ -21,7 +21,6 @@ app.use('/private', require('./routes/private'));
 
 
 
-
 // app.use('api', fileRoutes.)
 // Error Handler ( Should be last piece of middleware)
 app.use(errorHandler);
