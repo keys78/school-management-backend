@@ -27,3 +27,4 @@ Admin manages both student and admin
 'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
 'http://' + req.headers.host + '/reset/' + token + '\n\n' +
 'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+https://jsonplaceholder.typicode.com/albums/1/photos
