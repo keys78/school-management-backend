@@ -12,6 +12,9 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+app.get('/', (req, res) => {
+    res.send('Welcome to e-school backend api 💁👌🎍😍')
+  })
 
 // authentication routes
 app.use('/auth', require('./routes/auth'));
