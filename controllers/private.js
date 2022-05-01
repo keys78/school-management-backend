@@ -1,8 +1,5 @@
 const User = require('../models/User');
 const ErrorResponse = require('../utils/errorResponse');
-const multer = require('multer')
-const DIR = './public';
-
 
 // User.findOne({ username: req.params.username })//       .populate('reviews')//       .then((result) => {//         res.json(result);//       })//       .catch((error) => {//         res.status(500).json({ error });//       });
 
@@ -48,7 +45,6 @@ exports.getStudent = (req, res, next) => {
     })
 
 };
-
 exports.getAllStudents = (req, res, next) => {
 
     try {
@@ -63,7 +59,6 @@ exports.getAllStudents = (req, res, next) => {
         next(error)
     }
 };
-
 exports.getTeacher = (req, res) => {
 
     const { id } = req.params
@@ -76,7 +71,6 @@ exports.getTeacher = (req, res) => {
     })
 
 };
-
 exports.getAllTeachers = (req, res, next) => {
     try {
         User.find({ role: 'teacher' }, function (err, teachers) {
@@ -89,30 +83,6 @@ exports.getAllTeachers = (req, res, next) => {
         next(error)
     }
 };
-
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, DIR)
-    },
-    filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-        cb(null, file.fieldname + '-' + uniqueSuffix)
-    }
-})
-
-
-exports.upload = multer({
-    storage: storage,
-    fileFilter: (req, file, cb) => {
-        if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
-            cb(null, true);
-        } else {
-            cb(null, false);
-            return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
-        }
-    }
-});
-
 exports.updateProfile = async (req, res, next) => {
 
     const user = await User.findById(req.user._id);
@@ -150,34 +120,6 @@ exports.updateProfile = async (req, res, next) => {
 
 
 };
-
-
-
-// router.post('/user-profile', upload.single('profileImg'), (req, res, next) => {
-exports.uploadImage = async (req, res, next) => {
-    const url = req.protocol + '://' + req.get('host')
-    const user = new User({
-
-        profileImg: url + '/public/' + req.file.filename
-    });
-    user.save().then(result => {
-        res.status(201).json({
-            result
-        })
-    }).catch(err => {
-        console.log(err),
-            res.status(500).json({
-                error: err
-            });
-    })
-};
-
-
-
-
-
-
-
 exports.deleteUser = async (req, res, next) => {
     User.findOneAndRemove({ _id: req.params.id }, (err) => {
         if (err) {

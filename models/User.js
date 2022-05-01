@@ -33,7 +33,10 @@ const UserSchema = new mongoose.Schema({
     dob: { type: String },
     soo: { type: String },
 
-    profileImg: { type: String, default:  "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg", },
+    profileImg:[ 
+        { type: mongoose.Schema.Types.ObjectId, ref: 'SingleFile' },
+        { default:  "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",}
+    ],
     courses: [
         { type: mongoose.Schema.Types.ObjectId, ref: 'Course' }
     ],

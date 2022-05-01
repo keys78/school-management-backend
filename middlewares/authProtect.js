@@ -53,9 +53,3 @@ exports.isAdmin = async (req, res, next) => {
     }
     next()
 }
-// exports.isTeacher = async (req, res, next) => {   
-//     if(req.user.role !== 'admin') {
-//         return next(new ErrorResponse('You are not an admin figure', 401))
-//     }
-//     next()
-// }
