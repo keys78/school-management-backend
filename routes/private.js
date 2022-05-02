@@ -14,8 +14,8 @@ router.route('/profile').post(protect, updateProfile);
 
 
 // file uploads
-router.post('/upload-photo', upload.single('file'), (uploadFile))
-router.route('/profile-photo').get(getProfileImage)
+router.post('/upload-photo/:id', upload.single('file'), (uploadFile))
+// router.route('/profile-photo').get(getProfileImage)
 
 
 router.route('/register-course/:id').post(protect, registerCourse) //userId

@@ -86,7 +86,6 @@ exports.getAllTeachers = (req, res, next) => {
 exports.updateProfile = async (req, res, next) => {
 
     const user = await User.findById(req.user._id);
-    // const url = req.protocol + '://' + req.get('host')
 
     if (user) {
         user.firstName = req.body.firstName || user.firstName;
@@ -96,12 +95,10 @@ exports.updateProfile = async (req, res, next) => {
         user.phone = req.body.phone || user.phone;
         user.address = req.body.address || user.address;
         user.soo = req.body.soo || user.soo;
-        // user.profileImg = user.profileImg
 
         const updatedUser = await user.save();
 
         res.json({
-            //   _id: updatedUser._id,
             firstName: updatedUser.firstName,
             lastName: updatedUser.lastName,
             email: updatedUser.email,
@@ -109,8 +106,6 @@ exports.updateProfile = async (req, res, next) => {
             phone: updatedUser.phone,
             address: updatedUser.address,
             soo: updatedUser.soo,
-            //   profileImg: updatedUser.profileImg
-
         });
 
     } else {

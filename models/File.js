@@ -17,6 +17,11 @@ const singleFileSchema = new Schema({
     fileSize: {
         type: String,
         required: true
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
     }
 }, {collection: 'uploads'});
 

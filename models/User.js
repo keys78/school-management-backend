@@ -9,14 +9,14 @@ const UserSchema = new mongoose.Schema({
         type: String,
         default: "student",
         enum: ["student", "teacher", "admin"]
-      },
-    
+    },
+
     level: {
         type: String,
         default: '100'
     },
 
-    firstName: { type: String, required: [true, "Please provide firstName"]},
+    firstName: { type: String, required: [true, "Please provide firstName"] },
     lastName: { type: String, required: [true, "Please provide lastName"] },
     gender: { type: String },
 
@@ -33,17 +33,23 @@ const UserSchema = new mongoose.Schema({
     dob: { type: String },
     soo: { type: String },
 
-    profileImg:[ 
-        { type: mongoose.Schema.Types.ObjectId, ref: 'SingleFile' },
-        { default:  "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",}
-    ],
+
+    profileImg: {
+        type: String,
+
+    },
+    pic: {
+        type: String,
+        default: 'https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg'
+    },
+
     courses: [
         { type: mongoose.Schema.Types.ObjectId, ref: 'Course' }
     ],
 
     department: { type: String },
     faculty: { type: String },
-   
+
     password: {
         type: String,
         required: [true, "Please add a password"],
@@ -52,31 +58,31 @@ const UserSchema = new mongoose.Schema({
     },
     resetPasswordToken: String,
     resetPasswordExpire: Date,
-    
+
 },
-{ timestamps: true });
+    { timestamps: true });
 
 
 
 
-UserSchema.pre("save", async function(next) {
-    if(!this.isModified("password")) {
+UserSchema.pre("save", async function (next) {
+    if (!this.isModified("password")) {
         next();
     }
-     const salt = await bcrypt.genSalt(10);
-     this.password = await bcrypt.hash(this.password, salt);
-     next();
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
 });
 
-UserSchema.methods.matchPasswords = async function(password) {
+UserSchema.methods.matchPasswords = async function (password) {
     return await bcrypt.compare(password, this.password);
 }
 
-UserSchema.methods.getSignedToken = function() {
-    return jwt.sign({ id: this._id}, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE})
+UserSchema.methods.getSignedToken = function () {
+    return jwt.sign({ id: this._id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE })
 }
 
-UserSchema.methods.getResetPasswordToken = function() {
+UserSchema.methods.getResetPasswordToken = function () {
     const resetToken = crypto.randomBytes(20).toString("hex");
 
     this.resetPasswordToken = crypto
