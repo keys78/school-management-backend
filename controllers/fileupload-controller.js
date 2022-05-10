@@ -1,5 +1,3 @@
-const { fileSizeFormatter } = require("../utils/filehelper")
-const SingleFile = require('../models/File');
 const User = require('../models/User')
 
 // exports.uploadFile = async (req, res, next) => {
@@ -23,7 +21,7 @@ const User = require('../models/User')
 exports.uploadFile = async (req, res, next) => {
 
     const user = await User.findById(req.params.id);
-    const url = req.protocol + '://' + req.get('host') + '/'
+    // const url = req.protocol + '://' + req.get('host') + '/'
 
 
     if (user) {

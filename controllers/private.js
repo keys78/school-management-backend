@@ -6,7 +6,7 @@ const ErrorResponse = require('../utils/errorResponse');
 exports.getUser = async (req, res,) => {
     const { id } = req.user
 
-    await User.findOne({ _id: id }).populate({ path: 'courses', select: 'code title score units score status -_id', }).exec((err, user) => {
+    await User.findOne({ _id: id }).populate({ path: 'courses', select: 'code title score units score status gradepoint qualitypoint letterGrade -_id', }).exec((err, user) => {
         if (err) {
             res.status(400).send(err)
         } else {
@@ -48,7 +48,7 @@ exports.getStudent = (req, res, next) => {
 exports.getAllStudents = (req, res, next) => {
 
     try {
-        User.find({ role: 'student' }).populate({ path: 'courses', select: 'code title score units score status _id', }).exec((err, users) => {
+        User.find({ role: 'student' }).populate({ path: 'courses', select: 'code title score units score status gradepoint qualitypoint letterGrade _id', }).exec((err, users) => {
             if (err) {
                 return res.json({ success: false, data: "something went wrong" })
             }

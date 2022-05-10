@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { registerCourse, updateScore, getAllUserForACourse  } = require("../controllers/course-controller");
-const { uploadFile, getProfileImage } = require("../controllers/fileupload-controller");
+const { uploadFile } = require("../controllers/fileupload-controller");
 const { getUser, getStudent, getAllStudents, getTeacher, getAllTeachers, updateProfile, deleteUser, } = require('../controllers/private');
 const { protect, isAdmin, isTeacherAndAdmin } = require('../middlewares/authProtect');
 const { upload } = require("../utils/filehelper")
@@ -27,7 +27,7 @@ router.route('/getcourse').get(getAllUserForACourse)
 router.route('/admin').get(protect, isAdmin, getUser);
 router.route('/admin/user/:id').get(protect, isAdmin, getStudent);
 router.route('/admin/teacher/:id').get(protect, isAdmin, getTeacher);
-router.route('/admin/teachers').get(protect, isAdmin, getAllTeachers);
+router.route('/admin/teachers').get(protect, isTeacherAndAdmin, getAllTeachers);
 router.route('/admin/delete-user/:id').delete(protect, isAdmin, deleteUser);
 
 module.exports = router;
