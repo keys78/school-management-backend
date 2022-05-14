@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "devStart": "supervisor server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "devStart": "supervisor server.js"
   },
   "keywords": [],
   "author": "",

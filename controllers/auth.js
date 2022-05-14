@@ -84,12 +84,12 @@ exports.forgotpassword = async (req, res, next) => {
                     <a style="color: #fff; font-size: 18px; text-decoration: none; " href=${resetUrl} clicktracking=off>Click to Reset Password </a>
                 </button>
 
-                <p style="text-align: center; padding-top: 17px; padding-bottom:10px; font-size: 12px;">All Rights Reserved. e-school@2022 &#127891;</p>
+                <p style="text-align: center; padding-top: 17px; padding-bottom:15px; font-size: 12px;">All Rights Reserved. e-school@2022 &#127891;</p>
         </div>
     </section>
-           
-
         `
+
+
         try {
             await sendEmail({
                 to: user.email,
@@ -97,7 +97,7 @@ exports.forgotpassword = async (req, res, next) => {
                 text: message
             });
 
-            res.status(200).json({ success: true, data: ` Check your inbox for the next steps. If you don't receive an email, and it's not in your spam folder this could mean you signed up with a different address.` });
+            res.status(200).json({ success: true, data: `Check your inbox for the next steps. If you don't receive an email, and it's not in your spam folder this could mean you signed up with a different address.` });
         } catch (error) {
             user.resetPasswordToken = undefined;
             user.resetPasswordExpire = undefined;
