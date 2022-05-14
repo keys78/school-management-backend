@@ -83,6 +83,17 @@ exports.getAllTeachers = (req, res, next) => {
         next(error)
     }
 };
+exports.getStudentLecturers = (req, res, next) => {
+    try {
+        User.find({role: 'teacher'}, { _id : 0, firstName : 1 , lastName: 1, department: 1}, function (err, data) {
+            if(err) { return handleError(res, err); }
+            return res.json(200, data);
+          });
+    } catch (error) {
+        next(error)
+    }
+  
+};
 exports.updateProfile = async (req, res, next) => {
 
     const user = await User.findById(req.user._id);

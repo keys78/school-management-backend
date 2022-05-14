@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { registerCourse, updateScore, getAllUserForACourse  } = require("../controllers/course-controller");
 const { uploadFile } = require("../controllers/fileupload-controller");
-const { getUser, getStudent, getAllStudents, getTeacher, getAllTeachers, updateProfile, deleteUser, } = require('../controllers/private');
+const { getUser, getStudent, getAllStudents, getTeacher, getAllTeachers, updateProfile, deleteUser, getStudentLecturers, } = require('../controllers/private');
 const { protect, isAdmin, isTeacherAndAdmin } = require('../middlewares/authProtect');
 const { upload } = require("../utils/filehelper")
 
@@ -11,17 +11,14 @@ const { upload } = require("../utils/filehelper")
 // user routes
 router.route('/user').get(protect, getUser);
 router.route('/profile').post(protect, updateProfile);
-
-
-// file uploads
 router.post('/upload-photo/:id', upload.single('file'), (uploadFile))
-// router.route('/profile-photo').get(getProfileImage)
 
 
 router.route('/register-course/:id').post(protect, registerCourse) //userId
 router.route('/update-score/:id').put(protect, isTeacherAndAdmin, updateScore) //courseId
 router.route('/students').get(protect, isTeacherAndAdmin, getAllStudents);
 router.route('/getcourse').get(getAllUserForACourse)
+router.route('/get-teacher-info').get(protect, getStudentLecturers)
 
 // admin routes
 router.route('/admin').get(protect, isAdmin, getUser);
