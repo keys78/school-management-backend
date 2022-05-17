@@ -17,8 +17,4 @@ router.route("/resetpassword/:resetToken").put(resetpassword)
 
 router.route("/changepassword/:id").post(changepassword)
 
-// router.route('/changepassword/:id', function(req, res){
-//     changepassword
-//   });
-
 module.exports = router

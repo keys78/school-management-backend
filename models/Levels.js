@@ -9,7 +9,7 @@ const FacultySchema = new mongoose.Schema({
 
 
 const DepartmentSchema = new mongoose.Schema({
-    department: { required:true, type: String },
+    department: { required: true, type: String },
     courses: [
         { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
     ]
@@ -17,11 +17,14 @@ const DepartmentSchema = new mongoose.Schema({
 
 
 const CourseSchema = new mongoose.Schema({
-    code: { type: String,  required:true, },
-    title: { type: String, required:true, },
-    score: { type: Number, required:true, },
-    units: { type: Number, required:true, },
-    status : { type: Boolean, default: false },
+    code: { type: String, required: true, },
+    title: { type: String, required: true, },
+    score: { type: Number, required: true, },
+    gradepoint: { type: Number, required: true, },
+    letterGrade: { type: String, required: true, },
+    units: { type: Number, required: true, },
+    qualitypoint: { type: Number, required: true, },
+    status: { type: Boolean, default: false },
 
     user: {
         type: mongoose.Schema.Types.ObjectId,

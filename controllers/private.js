@@ -1,15 +1,12 @@
 const User = require('../models/User');
 const ErrorResponse = require('../utils/errorResponse');
-const multer = require('multer')
-const DIR = './public';
-
 
 // User.findOne({ username: req.params.username })//       .populate('reviews')//       .then((result) => {//         res.json(result);//       })//       .catch((error) => {//         res.status(500).json({ error });//       });
 
 exports.getUser = async (req, res,) => {
     const { id } = req.user
 
-    await User.findOne({ _id: id }).populate({ path: 'courses', select: 'code title score units score status -_id', }).exec((err, user) => {
+    await User.findOne({ _id: id }).populate({ path: 'courses', select: 'code title score units score status gradepoint qualitypoint letterGrade -_id', }).exec((err, user) => {
         if (err) {
             res.status(400).send(err)
         } else {
@@ -48,11 +45,10 @@ exports.getStudent = (req, res, next) => {
     })
 
 };
-
 exports.getAllStudents = (req, res, next) => {
 
     try {
-        User.find({ role: 'student' }).populate({ path: 'courses', select: 'code title score units score status _id', }).exec((err, users) => {
+        User.find({ role: 'student' }).populate({ path: 'courses', select: 'code title score units score status gradepoint qualitypoint letterGrade _id', }).exec((err, users) => {
             if (err) {
                 return res.json({ success: false, data: "something went wrong" })
             }
@@ -63,7 +59,6 @@ exports.getAllStudents = (req, res, next) => {
         next(error)
     }
 };
-
 exports.getTeacher = (req, res) => {
 
     const { id } = req.params
@@ -76,7 +71,6 @@ exports.getTeacher = (req, res) => {
     })
 
 };
-
 exports.getAllTeachers = (req, res, next) => {
     try {
         User.find({ role: 'teacher' }, function (err, teachers) {
@@ -89,34 +83,20 @@ exports.getAllTeachers = (req, res, next) => {
         next(error)
     }
 };
-
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, DIR)
-    },
-    filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-        cb(null, file.fieldname + '-' + uniqueSuffix)
+exports.getStudentLecturers = (req, res, next) => {
+    try {
+        User.find({role: 'teacher'}, { _id : 0, firstName : 1 , lastName: 1, department: 1}, function (err, data) {
+            if(err) { return handleError(res, err); }
+            return res.json(200, data);
+          });
+    } catch (error) {
+        next(error)
     }
-})
-
-
-exports.upload = multer({
-    storage: storage,
-    fileFilter: (req, file, cb) => {
-        if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
-            cb(null, true);
-        } else {
-            cb(null, false);
-            return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
-        }
-    }
-});
-
+  
+};
 exports.updateProfile = async (req, res, next) => {
 
     const user = await User.findById(req.user._id);
-    // const url = req.protocol + '://' + req.get('host')
 
     if (user) {
         user.firstName = req.body.firstName || user.firstName;
@@ -126,12 +106,10 @@ exports.updateProfile = async (req, res, next) => {
         user.phone = req.body.phone || user.phone;
         user.address = req.body.address || user.address;
         user.soo = req.body.soo || user.soo;
-        // user.profileImg = user.profileImg
 
         const updatedUser = await user.save();
 
         res.json({
-            //   _id: updatedUser._id,
             firstName: updatedUser.firstName,
             lastName: updatedUser.lastName,
             email: updatedUser.email,
@@ -139,8 +117,6 @@ exports.updateProfile = async (req, res, next) => {
             phone: updatedUser.phone,
             address: updatedUser.address,
             soo: updatedUser.soo,
-            //   profileImg: updatedUser.profileImg
-
         });
 
     } else {
@@ -150,34 +126,6 @@ exports.updateProfile = async (req, res, next) => {
 
 
 };
-
-
-
-// router.post('/user-profile', upload.single('profileImg'), (req, res, next) => {
-exports.uploadImage = async (req, res, next) => {
-    const url = req.protocol + '://' + req.get('host')
-    const user = new User({
-
-        profileImg: url + '/public/' + req.file.filename
-    });
-    user.save().then(result => {
-        res.status(201).json({
-            result
-        })
-    }).catch(err => {
-        console.log(err),
-            res.status(500).json({
-                error: err
-            });
-    })
-};
-
-
-
-
-
-
-
 exports.deleteUser = async (req, res, next) => {
     User.findOneAndRemove({ _id: req.params.id }, (err) => {
         if (err) {

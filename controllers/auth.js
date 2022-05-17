@@ -64,11 +64,32 @@ exports.forgotpassword = async (req, res, next) => {
         const resetUrl = `http://localhost:3000/passwordreset/${resetToken}`;
 
         const message = `
-            <h1>You have requested a password reset</h1>
-            <p>Please go to this link to reset your password</p>
-            <a href=${resetUrl} clicktracking=off> ${resetUrl} </a>
 
+        <section style="width: 100%; height:100vh; background: #ECECEC;">
+        <div>&nbsp;</div>
+        <div>&nbsp;</div>
+        <div>&nbsp;</div>
+        <div>&nbsp;</div>
+        <div style="max-width: 450px; margin:0 auto; background: #fff; color:#000; padding:10px 20px 0px 20px; border-radius: 5px;">
+            <h1 style="font-size: 32px; font-weight: bold;">Password Reset Request</h1>
+            <hr/>
+            <p style="font-size: 17px;">
+                You are receiving this because you (or someone else) have requested the reset of the password for your account, 
+               <br style="margin:0 0 10px 0"/>
+               <br>
+
+                If you did not request this, please ignore this email and your password will remain unchanged.
+
+                <button style="width: 100%; padding:10px 0; color: #fff; background:#002147; margin-top: 15px;">
+                    <a style="color: #fff; font-size: 18px; text-decoration: none; " href=${resetUrl} clicktracking=off>Click to Reset Password </a>
+                </button>
+
+                <p style="text-align: center; padding-top: 17px; padding-bottom:15px; font-size: 12px;">All Rights Reserved. e-school@2022 &#127891;</p>
+        </div>
+    </section>
         `
+
+
         try {
             await sendEmail({
                 to: user.email,
@@ -76,7 +97,7 @@ exports.forgotpassword = async (req, res, next) => {
                 text: message
             });
 
-            res.status(200).json({ success: true, data: " If we found an account associated with that email, we've sent password reset instructions to the primary email address on the account." });
+            res.status(200).json({ success: true, data: `Check your inbox for the next steps. If you don't receive an email, and it's not in your spam folder this could mean you signed up with a different address.` });
         } catch (error) {
             user.resetPasswordToken = undefined;
             user.resetPasswordExpire = undefined;
@@ -91,6 +112,7 @@ exports.forgotpassword = async (req, res, next) => {
     }
 };
 
+
 exports.resetpassword = async (req, res, next) => {
     const resetPasswordToken = crypto
         .createHash("sha256")
@@ -100,8 +122,9 @@ exports.resetpassword = async (req, res, next) => {
     try {
         const user = await User.findOne({
             resetPasswordToken,
-            resetPasswordExpire: { $gt: Date.now() }
-        })
+            resetPasswordExpire: { $gt: Date.now() },
+        });
+
 
         if (!user) {
             return next(new ErrorResponse("Invalid Reset Token", 400))
@@ -115,7 +138,9 @@ exports.resetpassword = async (req, res, next) => {
 
         res.status(201).json({
             success: true,
-            data: "Password Reset Success"
+            data: "Password Updated Success",
+            token: user.getSignedToken(),
+
         })
     } catch (error) {
         next(error);
@@ -151,5 +176,5 @@ exports.changepassword = async (req, res, next) => {
 
 const sendToken = (user, statusCode, res) => {
     const token = user.getSignedToken();
-    res.status(statusCode).json({ success: true, data:user.firstName, token })
+    res.status(statusCode).json({ success: true, data: user.firstName, token })
 }

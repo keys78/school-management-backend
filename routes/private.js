@@ -1,34 +1,33 @@
 const express = require("express");
-const { registerCourse, updateScore, selectDepartment, getAllUserForACourse  } = require("../controllers/course-controller");
+const { cloudinaryUpload } = require("../controllers/cloudinary-upload");
 const router = express.Router();
-const { getUser, getStudent, getAllStudents, getTeacher, getAllTeachers, updateProfile, deleteUser, upload, uploadImage } = require('../controllers/private');
+const { registerCourse, updateScore, getAllUserForACourse  } = require("../controllers/course-controller");
+const { uploadFile } = require("../controllers/fileupload-controller");
+const { getUser, getStudent, getAllStudents, getTeacher, getAllTeachers, updateProfile, deleteUser, getStudentLecturers, } = require('../controllers/private');
 const { protect, isAdmin, isTeacherAndAdmin } = require('../middlewares/authProtect');
+const { upload } = require("../utils/filehelper")
+
 
 
 // user routes
 router.route('/user').get(protect, getUser);
 router.route('/profile').post(protect, updateProfile);
-router.route('/image-upload', upload.single('profileImg')).post(protect, uploadImage);
+router.post('/upload-photo/:id', upload.single('file'), (uploadFile))
 
-// , upload.single('profileImg')
+router.post('/cloudinary-upload', (cloudinaryUpload))
+
 
 router.route('/register-course/:id').post(protect, registerCourse) //userId
-
-
 router.route('/update-score/:id').put(protect, isTeacherAndAdmin, updateScore) //courseId
 router.route('/students').get(protect, isTeacherAndAdmin, getAllStudents);
-
-
 router.route('/getcourse').get(getAllUserForACourse)
-
-
+router.route('/get-teacher-info').get(protect, getStudentLecturers)
 
 // admin routes
 router.route('/admin').get(protect, isAdmin, getUser);
 router.route('/admin/user/:id').get(protect, isAdmin, getStudent);
 router.route('/admin/teacher/:id').get(protect, isAdmin, getTeacher);
-router.route('/admin/teachers').get(protect, isAdmin, getAllTeachers);
+router.route('/admin/teachers').get(protect, isTeacherAndAdmin, getAllTeachers);
 router.route('/admin/delete-user/:id').delete(protect, isAdmin, deleteUser);
-
 
 module.exports = router;
