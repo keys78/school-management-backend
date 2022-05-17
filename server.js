@@ -10,12 +10,10 @@ const path = require('path')
 connectDB();
 const app = express();
 app.use(express.json());
+app.use(express.json({ limit: '500mb' }));
+app.use(express.urlencoded({ limit: '500mb', extended: true, parameterLimit: 1000000 }));
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-    extended: false
-}));
-
 app.use(cors());
 
 
