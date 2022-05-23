@@ -40,7 +40,8 @@ const UserSchema = new mongoose.Schema({
     },
     pic: {
         type: String,
-        default: 'https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg'
+        // default: 'https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg'
+        default: 'https://res.cloudinary.com/dzqeok9jl/image/upload/v1653304270/e-school/user-default_ndnxey.jpg'
     },
 
     courses: [
