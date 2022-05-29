@@ -61,7 +61,7 @@ exports.forgotpassword = async (req, res, next) => {
 
         await user.save();
 
-        const resetUrl = `https://my-e-school-api.herokuapp.com/passwordreset/${resetToken}`;
+        const resetUrl = `https://e-school-1.netlify.app/resetpassword/${resetToken}`;
 
         const message = `
 
