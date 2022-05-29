@@ -61,7 +61,7 @@ exports.forgotpassword = async (req, res, next) => {
 
         await user.save();
 
-        const resetUrl = `https://e-school-1.netlify.app/resetpassword/${resetToken}`;
+        const resetUrl = `https://e-school-1.netlify.app/passwordreset/${resetToken}`;
 
         const message = `
 
