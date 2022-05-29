@@ -1,5 +1,4 @@
 const express = require("express");
-const { cloudinaryUpload } = require("../controllers/cloudinary-upload");
 const router = express.Router();
 const { registerCourse, updateScore, getAllUserForACourse  } = require("../controllers/course-controller");
 const { uploadFile } = require("../controllers/fileupload-controller");
@@ -14,7 +13,6 @@ router.route('/user').get(protect, getUser);
 router.route('/profile').post(protect, updateProfile);
 router.post('/upload-photo/:id', upload.single('file'), (uploadFile))
 
-router.post('/cloudinary-upload', (cloudinaryUpload))
 
 
 router.route('/register-course/:id').post(protect, registerCourse) //userId
