@@ -4,14 +4,14 @@ const connectDB = require('./config/db');
 const errorHandler = require('./middlewares/error')
 const cors = require('cors')
 const bodyParser = require('body-parser')
-const path = require('path')
+
 
 // Connect DB
 connectDB();
 const app = express();
 app.use(express.json());
-app.use(express.json({ limit: '500mb' }));
-app.use(express.urlencoded({ limit: '500mb', extended: true, parameterLimit: 1000000 }));
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true, parameterLimit: 10000 }));
 
 app.use(bodyParser.json());
 app.use(cors());
