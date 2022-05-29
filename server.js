@@ -23,7 +23,9 @@ app.use('/auth', require('./routes/auth'));
 // user routes
 app.use('/private', require('./routes/private'));
 
-
+app.get("/", (req, res) =>
+  res.json({ success: true, message: "e-school-api is running!" })
+);
 
 // app.use('api', fileRoutes.)
 // Error Handler ( Should be last piece of middleware)
