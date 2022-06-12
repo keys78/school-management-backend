@@ -42,6 +42,8 @@ const UserSchema = new mongoose.Schema({
         type: String,
         default: 'https://res.cloudinary.com/dzqeok9jl/image/upload/v1653304270/e-school/user-default_ndnxey.jpg'
     },
+    activeStatus: { type: Boolean, default: false },
+
 
     courses: [
         { type: mongoose.Schema.Types.ObjectId, ref: 'Course' }

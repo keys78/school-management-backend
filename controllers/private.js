@@ -3,6 +3,7 @@ const ErrorResponse = require('../utils/errorResponse');
 
 // User.findOne({ username: req.params.username })//       .populate('reviews')//       .then((result) => {//         res.json(result);//       })//       .catch((error) => {//         res.status(500).json({ error });//       });
 
+
 exports.getUser = async (req, res,) => {
     const { id } = req.user
 
@@ -135,4 +136,41 @@ exports.deleteUser = async (req, res, next) => {
 
         res.json({ success: true, data: 'account has been deleted' })
     });
+}
+
+exports.activateStatus = async (req, res, next) => {
+  
+    const user = await User.findById(req.user._id);
+
+    if (user) {
+        user.activeStatus = true
+
+        const updatedUser = await user.save();
+
+        res.json({
+            activeStatus: updatedUser.activeStatus,
+        });
+
+    } else {
+        res.status(404);
+        throw new Error("User Not Found");
+    }
+}
+exports.inActivateStatus = async (req, res, next) => {
+  
+    const user = await User.findById(req.user._id);
+
+    if (user) {
+        user.activeStatus = false
+
+        const updatedUser = await user.save();
+
+        res.json({
+            activeStatus: updatedUser.activeStatus,
+        });
+
+    } else {
+        res.status(404);
+        throw new Error("User Not Found");
+    }
 }

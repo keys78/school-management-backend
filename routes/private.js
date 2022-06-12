@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { registerCourse, updateScore, getAllUserForACourse } = require("../controllers/course-controller");
-const { getUser, getStudent, getAllStudents, getTeacher, getAllTeachers, updateProfile, deleteUser, getStudentLecturers, } = require('../controllers/private');
+const { getUser, getStudent, getAllStudents, getTeacher, getAllTeachers, updateProfile, deleteUser, getStudentLecturers, activateStatus, inActivateStatus } = require('../controllers/private');
 const { protect, isAdmin, isTeacherAndAdmin } = require('../middlewares/authProtect');
 // const { uploadFile } = require("../controllers/fileupload-controller");
 // const { upload } = require("../utils/filehelper")
@@ -43,7 +43,8 @@ router.post('/upload-photo/:id', upload.single('profileImage'), protect, async (
     }
 })
 
-
+router.route('/activeStatus').post(protect, activateStatus)
+router.route('/inactiveStatus').post(protect, inActivateStatus)
 
 
 router.route('/register-course/:id').post(protect, registerCourse) //userId
